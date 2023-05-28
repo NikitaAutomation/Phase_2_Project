@@ -1,11 +1,16 @@
 package stepdefs;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -64,7 +69,7 @@ public class AddToCartStepDef {
 	}
 
 	@Then("the cart should contain the added products")
-	public void the_cart_should_contain_the_added_products(io.cucumber.datatable.DataTable dataTable) {
+	public void the_cart_should_contain_the_added_products(io.cucumber.datatable.DataTable dataTable) throws IOException {
 		List<Map<String, String>> productList = dataTable.asMaps(String.class, String.class);
 
 		for (Map<String, String> product : productList) {
@@ -78,7 +83,13 @@ public class AddToCartStepDef {
 				Assert.fail("Product " + productName + " is not found in the cart.");
 			}
 		}
+		TakesScreenshot tsObj = (TakesScreenshot)driver;
+		File fileObj = tsObj.getScreenshotAs(OutputType.FILE);
+		File screenshotObj = new File("src/test/java/Selenium/screenshot.png");
+		FileUtils.copyFile(fileObj,screenshotObj);
 
 	}
+	
+
 
 }
